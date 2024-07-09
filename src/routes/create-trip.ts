@@ -1,15 +1,12 @@
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
-import dayjs from "dayjs";
-import ptBr from "dayjs/locale/pt-br";
-import localizedFormat from "dayjs/plugin/localizedFormat";
 import nodemailer from "nodemailer";
 import { prisma } from "../lib/prisma";
 import { getMailClient } from "../lib/mail";
+import { dayjs } from "../lib/dayjs";
 
-dayjs.locale(ptBr);
-dayjs.extend(localizedFormat);
+
 
 export async function createTrip(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -51,7 +48,7 @@ export async function createTrip(app: FastifyInstance) {
           destination,
           starts_at,
           ends_at,
-          Participants: {
+          participants: {
             createMany: {
               data: [
                 {
@@ -94,8 +91,6 @@ export async function createTrip(app: FastifyInstance) {
             <p>
               <a href="${confirmationLink}">Confirmar viagem</a>
             </p>
-            <p></p>
-            <p>Caso esteja usando o dispositivo móvel, você também pode confirmar a criação da viagem pelos aplicativos:</p>
             <p></p>
             <p>
               Caso você não saiba do que se trata esse e-mail,
